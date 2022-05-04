@@ -76,4 +76,4 @@ Note the use of the `--source-name` command-line option. This helps keep track o
 
 Some imports will exhaust the amount of memory allocated to PHP. In order to ignore the default limit, and use any memory available, an import can be run like this:
 
-`$ php -d memory_limit=-1 symfony csv:import --source-name="items" migration/output/items/items_0000.csv
+`$ php -d memory_limit=-1 symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
