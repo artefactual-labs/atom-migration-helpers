@@ -33,9 +33,7 @@ Can conditionally ignore rows
 
 Some documentation of these classes exists (https://wiki.accesstomemory.org/Resources/CSV_transformation) but it's likely worth looking at examples in past migrations to get a sense of how they work.
 
-Here's an example of an unusually simple QubitCsvTransformFactory-created transformation (to show the basic structure):
-
-https://internal.artefactual.com/gitweb/?p=client/unog/scripts.git;a=blob_plain;f=migration/transform/scope/auth.transform.php;hb=refs/heads/master
+Here's an example of an unusually simple QubitCsvTransformFactory-created transformation (to show the basic structure): https://bit.ly/3yandax
 
 ### Custom Scripts
 
