@@ -2,43 +2,40 @@
 
 function getParent($id)
 {
-  $sql = "SELECT parent_id FROM information_object WHERE id=?";
+    $sql = "SELECT parent_id FROM information_object WHERE id=?";
 
-  return QubitPdo::fetchColumn($sql, [$id]);
+    return QubitPdo::fetchColumn($sql, [$id]);
 }
 
 function getAncestors($id, $maxDepth = false)
 {
-  $ancestors = [];
+    $ancestors = [];
 
-  $depth = 0;
-  $currentId = $id;
+    $depth = 0;
+    $currentId = $id;
 
-  while (($parentId = getParent($currentId)) && (empty($maxDepth) || $depth < $maxDepth))
-  {
-    $ancestors[] = $parentId;
-    $currentId = $parentId;
+    while (($parentId = getParent($currentId)) && (empty($maxDepth) || $depth < $maxDepth)) {
+        $ancestors[] = $parentId;
+        $currentId = $parentId;
 
-    $depth++;
-  }
+        $depth++;
+    }
 
-  // Indicate that maximum depth was reached
-  if (!empty($maxDepth) && $depth == $maxDepth)
-  {
-    return false;
-  }
+    // Indicate that maximum depth was reached
+    if (!empty($maxDepth) && $depth == $maxDepth) {
+        return false;
+    }
 
-  return $ancestors;
+    return $ancestors;
 }
 
 function parentingIsValidCheck($id, $parentId)
 {
-  $parentAncestors = getAncestors($parentId);
+    $parentAncestors = getAncestors($parentId);
 
-  if (!in_array($id, $parentAncestors))
-  {
-    return true;
-  }
+    if (!in_array($id, $parentAncestors)) {
+        return true;
+    }
 
-  return false;
+    return false;
 }
