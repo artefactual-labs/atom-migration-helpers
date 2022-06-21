@@ -18,7 +18,7 @@ function getInformationObjectsWithContainerNotes($levelOfDescriptionIds, $contai
 {
     $ids = [];
 
-    $sql = 'SELECT i.id FRON note n
+    $sql = 'SELECT i.id FROM note n
     INNER JOIN information_object i ON n.object_id=i.id ';
 
     if ($exclude) {
@@ -30,7 +30,7 @@ function getInformationObjectsWithContainerNotes($levelOfDescriptionIds, $contai
     $sql .= '('. implode(',', $levelOfDescriptionIds) . ') AND type_id=?';
 
     foreach (QubitPdo::fetchAll($sql, [$containerNoteTypeId], array('fetchMode' => PDO::FETCH_ASSOC)) as $result) {
-        $noteIds[] = $result['id'];
+        $ids[] = $result['id'];
     }
 
     return $ids;
