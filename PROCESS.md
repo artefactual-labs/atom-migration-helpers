@@ -77,3 +77,20 @@ Note the use of the `--source-name` command-line option. This helps keep track o
 Some imports will exhaust the amount of memory allocated to PHP. In order to ignore the default limit, and use any memory available, an import can be run like this:
 
 `$ php -d memory_limit=-1 symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
+
+## Timing imports
+
+The Unix `time` command is useful for determining how long an import takes to
+run. The `-v` option provides verbose timing output, including "Elapsed (wall
+clock) time".
+
+ $ time -v php symfony csv:import --source-name="items" migration/output/items/items_0000.csv
+
+### Import sequencing
+
+Lower-level data, like terms and actors, should be imported before higher level
+data, like information objects.
+
+It can be helpful to create a shell script to sequence the import. In this script
+it can be useful to note, in comments, how long each step of the import takes
+to run.
