@@ -94,3 +94,10 @@ data, like information objects.
 It can be helpful to create a shell script to sequence the import. In this script
 it can be useful to note, in comments, how long each step of the import takes
 to run.
+
+### Importing in phases
+
+If there are parts of an import that aren't thoroughly tested it can be useful
+to pause the import after these parts and test that they worked. In order to do
+this rather than writing one shell script to sequence the import multiple shell
+scripts can be written so importing can be done in "phases".
