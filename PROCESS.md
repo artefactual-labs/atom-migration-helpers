@@ -68,7 +68,7 @@ Once development is roughed out the import can be fully run on a test server for
 
 Here’s an example of importing a single file of description data:
 
-`$ php symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
+    $ php symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
 
 Note the use of the `--source-name` command-line option. This helps keep track of imported data by assigning what is called a “source name” to imported data. When using most import tools each item imported into AtoM gets noted in a “keymap” table in the AtoM database. The keymap table records the “source ID” (the ID, if any, in the “legacyId” column of the imported CSV data), the “target ID” (the AtoM ID of the imported item),  the “source name” (a name to describe the imported data), and the “target name” (the AtoM data type of the imported item). Keymap data can be queried in MySQL to find out a number of things, like the AtoM ID of an imported item or the count of how many items were imported from a given source.
 
@@ -76,15 +76,15 @@ Note the use of the `--source-name` command-line option. This helps keep track o
 
 Some imports will exhaust the amount of memory allocated to PHP. In order to ignore the default limit, and use any memory available, an import can be run like this:
 
-`$ php -d memory_limit=-1 symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
+    $ php -d memory_limit=-1 symfony csv:import --source-name="items" migration/output/items/items_0000.csv`
 
-## Timing imports
+### Timing imports
 
 The Unix `time` command is useful for determining how long an import takes to
 run. The `-v` option provides verbose timing output, including "Elapsed (wall
 clock) time".
 
- $ time -v php symfony csv:import --source-name="items" migration/output/items/items_0000.csv
+    $ time -v php symfony csv:import --source-name="items" migration/output/items/items_0000.csv
 
 ### Import sequencing
 
