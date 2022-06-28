@@ -82,3 +82,47 @@ function cacheAccessionIdentifierIds()
 
     return $ids;
 }
+
+function getTermIdUsingName($name)
+{
+  $sql = 'SELECT id FROM term_i18n WHERE name=? AND culture=?';
+
+  return QubitPdo::fetchColumn($sql, [$name, 'en']);
+}
+
+function getTermIdFromTaxonomyUsingName($name, $taxonomyId)
+{
+  $sql = 'SELECT ti.id FROM term_i18n ti JOIN term t ON t.id = ti.id WHERE ti.name=? AND ti.culture=? AND t.taxonomy_id=?';
+
+  return QubitPdo::fetchColumn($sql, [$name, 'en', $taxonomyId]);
+}
+
+function getTermIdFromCachedTermsByName($name, $termCache)
+{
+  return array_search($name, $termCache);
+}
+
+function cacheTerms($taxonomyId)
+{
+  $terms = [];
+
+  $sql = 'SELECT ti.id, ti.name FROM term_i18n ti JOIN term t ON t.id = ti.id WHERE ti.culture=? AND t.taxonomy_id=?';
+
+  foreach (QubitPdo::fetchAll($sql, ['en', $taxonomyId], array('fetchMode' => PDO::FETCH_ASSOC)) as $result) {
+        $name = $result['name'];
+        $id = $result['id'];
+        $terms[$id] = $name;
+    }
+
+    return $terms;
+}
+
+function cacheSubjectTerms()
+{
+    return cacheTerms(QubitTaxonomy::SUBJECT_ID);
+}
+
+function cachePlaceTerms()
+{
+    return cacheTerms(QubitTaxonomy::PLACE_ID);
+}
