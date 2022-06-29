@@ -18,19 +18,19 @@ function addTerm($name, $taxonomyId, $parentId, $sourceNote='', $useForTerms='',
     $term->parentId = $parentId;
     $term->name = $name;
     $term->save();
-
-    // Deal with source note
-    if (!empty($sourceNote))
-    {
-      $note = new QubitNote();
-      $note->objectId = $term->id;
-      $note->typeId = QubitTerm::SOURCE_NOTE_ID;
-      $note->content = $sourceNote;
-      $note->culture = 'en';
-      $note->save();
-    }
   } else {
-     print "Term with name ". $name ." already exists with ID ". $term->getId() .". Adding relationships to existing term.\n";
+     print "Term with name ". $name ." already exists with ID ". $term->getId() .". Adding notes and relationships to existing term.\n";
+  }
+
+  // Deal with source note
+  if (!empty($sourceNote))
+  {
+    $note = new QubitNote();
+    $note->objectId = $term->id;
+    $note->typeId = QubitTerm::SOURCE_NOTE_ID;
+    $note->content = $sourceNote;
+    $note->culture = 'en';
+    $note->save();
   }
 
   // Deal with use fors
@@ -41,13 +41,7 @@ function addTerm($name, $taxonomyId, $parentId, $sourceNote='', $useForTerms='',
     {
       if (!empty($useForTerm))
       {
-        $usedFor = new QubitOtherName();
-        $usedFor->name = $usedForTerm;
-        $usedFor->objectId = $term->id;
-        $usedFor->typeId = QubitTerm::ALTERNATIVE_LABEL_ID;
-        $usedFor->sourceCulture = 'en';
-        
-        $term->otherNames[] = $usedFor;
+        addOtherFormOfNameToTerm($term, $useForTerm);
       }
     }
   }
@@ -94,29 +88,25 @@ function addOtherFormOfNameToTerm($term, $otherFormOfName)
   $term->otherNames[] = $usedFor;
 }
 
-function relateTerms($objectTerm, $cachedTerms, $relatedTerms = [])
+function relateTerms($objectTerm, $cachedTerms, $relatedTerms)
 {
-  // Add related terms
-  if (!empty($relatedTerms))
+  foreach($relatedTerms as $relatedTermName)
   {
-    foreach($relatedTerms as $relatedTermName)
-    {
-      try {
-        $termName = trim($relatedTermName);
-        $relatedTermId = getTermIdFromCachedTermsByName($termName, $cachedTerms);
-        if (!empty($relatedTermId))
-        {
-          $relation = new QubitRelation;
-          $relation->objectId = $objectTerm->id;
-          $relation->subjectId = $relatedTermId;
-          $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
-          $relation->sourceCulture = 'en';
-          $relation->save();
-        }  
-      }
-      catch (exception $e) {
-         print "Error adding related term: ". $e->getMessage() ." (". $relatedTermName .")\n";
-      }
+    try {
+      $termName = trim($relatedTermName);
+      $relatedTermId = getTermIdFromCachedTermsByName($termName, $cachedTerms);
+      if (!empty($relatedTermId))
+      {
+        $relation = new QubitRelation;
+        $relation->objectId = $objectTerm->id;
+        $relation->subjectId = $relatedTermId;
+        $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
+        $relation->sourceCulture = 'en';
+        $relation->save();
+      }  
+    }
+    catch (exception $e) {
+       print "Error adding related term: ". $e->getMessage() ." (". $relatedTermName .")\n";
     }
   }
 }
