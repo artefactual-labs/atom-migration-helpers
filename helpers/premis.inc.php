@@ -59,15 +59,10 @@ function addOrGetRights($objectId, $basisId = null)
   $criteria = new Criteria;
   $criteria->add(QubitRelation::SUBJECT_ID, $objectId);
   $criteria->add(QubitRelation::TYPE_ID, QubitTerm::RIGHT_ID);
-  if (null !== $relation = QubitRelation::getOne($criteria))
+  $criteria->addJoin(QubitRelation::OBJECT_ID, QubitRights::ID);
+  if (null !== $rights = QubitRights::getOne($criteria))
   {
-    $rightsId = $relation->objectId;
-    $criteria = new Criteria;
-    $criteria->add(QubitRights::ID, $rightsId);
-    if (null !== $rights = QubitRights::getOne($criteria))
-    {
-      return $rights;
-    }
+    return $rights;
   }
 
   if (empty($basisId))
