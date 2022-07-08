@@ -59,9 +59,11 @@ The `QubitCsvTransformFactory` class:
 
 - Optionally converts Windows-1252 encoded data into UTF-8
 - Optionally sorts row data, before it’s output as CSV, by level of
-  description (highest level to lowest level) or a developer-defined sorting criteria
-- Writes transformed CSV output in a series of files with a fixed number rows each (1000 by default) in order to avoid running out of memory during large imports
-Can conditionally ignore rows
+  description (highest level to lowest level) or a developer-defined sorting
+  criteria
+- Writes transformed CSV output in a series of files with a fixed number rows
+  each (1000 by default) in order to avoid running out of memory during large
+  imports can conditionally ignore rows
 
 Some documentation of these classes exists
 (https://wiki.accesstomemory.org/Resources/CSV_transformation) but it's likely
