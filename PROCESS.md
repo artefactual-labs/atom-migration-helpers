@@ -4,11 +4,21 @@ Given that migrations are “one-off” projects they don’t have to be done in
 
 ## Preparation
 
+### Organizing migration files
+
 Migration scripts and data are most often stored in an Artefactual hosted repository named with the convention `client/<organization name>/scripts`. This repository can hold organization-specific scripts, migrations, data, etc.
 
 Creating a “migration” directory in this repo is good practice as it will keep files related to the current migration separated from files for subsequent migrations, client-specific scripts, etc.
 
 Within the “migration” directory of the repo a “sourcedata” directory can be created to store client data in. Client data for a migration should, ideally, be exported in a format as similar to AtoM’s CSV import formats as possible.
+
+### Preflighting client data
+
+AtoM's CSV check task can be used to detect some errors in client source files.
+
+For example:
+
+    $ php symfony csv:check migration/sourcedata/fonds/fonds.csv
 
 ## Development
 
