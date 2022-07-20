@@ -23,7 +23,9 @@ subsequent migrations, client-specific scripts, etc.
 Within the “migration” directory of the repo a “sourcedata” directory can
 be created to store client data in. Client data for a migration should,
 ideally, be exported in a format as similar to AtoM’s CSV import formats as
-possible.
+possible. When getting updated versions of source data files it can be helpful
+to append some kind of version number to them so they don't get confused with
+earlier versions.
 
 ### Preflighting client data
 
@@ -150,9 +152,24 @@ clock) time".
 Lower-level data, like terms and actors, should be imported before higher level
 data, like information objects.
 
-It can be helpful to create a shell script to sequence the import. In this script
-it can be useful to note, in comments, how long each step of the import takes
-to run.
+It can be helpful to create a shell script to sequence the import. In this
+script it can be useful to note, in comments, how long each step of the import
+takes to run.
+
+## Detecting missing data
+
+To ensure that all source data got imported it can be useful to compare
+counts of source data with the number of imported items.
+
+The `scripts/data_counts.php` script can be used to generate counts.
+
+### Dealing with migration issues
+
+For complicated imports use of a tool like Trello can help keep track of any
+issues found.
+
+For complex transformations of data it can be worth describing things using
+pseudocode so non-developers can vet what's being done with source data.
 
 ### Importing in phases
 
