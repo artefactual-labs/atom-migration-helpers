@@ -156,7 +156,7 @@ It can be helpful to create a shell script to sequence the import. In this
 script it can be useful to note, in comments, how long each step of the import
 takes to run.
 
-## Troubleshooting migration issues
+## Troubleshooting
 
 Given that migration issues can be complicated issues inevitably arise.
 
