@@ -156,7 +156,11 @@ It can be helpful to create a shell script to sequence the import. In this
 script it can be useful to note, in comments, how long each step of the import
 takes to run.
 
-## Detecting missing data
+## Troubleshooting migration issues
+
+Given that migration issues can be complicated issues inevitably arise.
+
+### Detecting missing data
 
 To ensure that all source data got imported it can be useful to compare
 counts of source data with the number of imported items.
