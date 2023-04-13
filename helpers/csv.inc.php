@@ -1,62 +1,68 @@
 <?php
 
-function countCsvDataRows($filePath)
+class CsvReader
 {
-    $rowCount = 0;
+    private $filePath;
+    private $buffer;
+    private $handle;
+    private $header;
+    private $currentRow;
 
-    $file = new SplFileObject($filePath, 'r');
+    public function __construct($filePath, $buffer = 100000)
+    {
+        $this->filePath = $filePath;
+        $this->buffer = $buffer;
 
-    if ($file->fgetcsv()) {
-        while ($file->fgetcsv()) {
-            $rowCount++;
+        $this->handle = fopen($filePath, "r");
+
+        if (!$this->handle) {
+            throw new ErrorException("Could not open ". $filePath);
         }
+
+        $this->header = fgetcsv($this->handle, $this->buffer, ",");
     }
 
-    return $rowCount;
-}
-
-function getFileHandleOrDie($filePath)
-{
-    $handle = fopen($filePath, "r");
-
-    if (!$handle) {
-        print "Could not open ". $filePath ."\n";
-        exit(1);
+    public function getHeader()
+    {
+        return $this->header;
     }
 
-    return $handle;
-}
+    public function getColumnIndex($column)
+    {
+        $index = array_search($column, $this->header);
 
-function getCsvHeaderRowOrDie($filePath, $buffer = 100000)
-{
-    $handle = getFileHandleOrDie($filePath);
+        if (!is_numeric($index)) {
+            throw new ErrorException("No '". $column ."' column found.");
+        }
 
-    return fgetcsv($handle, $buffer, ",");
-}
-
-function getCsvRowsOrDie($filePath, $buffer = 100000)
-{
-    $handle = getFileHandleOrDie($filePath);
-
-    $header = fgetcsv($handle, $buffer, ",");
-
-    $rows = [];
-
-    while ($row = fgetcsv($handle, $buffer, ",")) {
-        $rows[] = $row;
+        return $index;
     }
 
-    return $rows;
-}
+    public function countRows()
+    {
+        $rowCount = 0;
 
-function getColumnValueIndexOrDie($row, $column)
-{
-    $index = array_search($column, $row);
+        $file = new SplFileObject($this->filePath, 'r');
 
-    if (!is_numeric($index)) {
-        print "No '". $column ."' column found.\n";
-        exit(1);
+        if ($file->fgetcsv()) {
+            while ($file->fgetcsv()) {
+                $rowCount++;
+            }
+        }
+
+        return $rowCount;
     }
 
-    return $index;
+    public function getRow()
+    {
+        $this->currentRow = fgetcsv($this->handle, $this->buffer, ",");
+        return $this->currentRow;
+    }
+
+    public function getColumn($column)
+    {
+        $index = $this->getColumnIndex($column);
+
+        return $this->currentRow[$index];
+    }
 }
